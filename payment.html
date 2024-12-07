@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment - Stana Karsa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Georgia', serif;
+    }
+
+    .navbar {
+      background-color: #2c3e50;
+    }
+    .navbar-brand, .nav-link, .user-profile {
+      color: #fff !important;
+    }
+    .user-profile {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #f39c12;
+    }
+
+    .container {
+      max-width: 900px;
+    }
+
+    h5, h6 {
+      color: #2c3e50;
+    }
+
+    .highlight {
+      color: #f39c12; /* Gold color */
+    }
+
+    .total-price {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .payment-methods ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .payment-methods ul li {
+      background-color: #f1f1f1;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .payment-methods ul li:hover {
+      background-color: #d9d9d9;
+    }
+
+    .payment-methods img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="rooms.html">Stana Karsa</a>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="rooms.html">Rooms</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="fields.html">Fields</a>
+        </li>
+        <li class="nav-item">
+          <img src="images/user-profile.png" alt="User" class="user-profile">
+          <span style="color: #fff;">Kelompok 1</span>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div class="container mt-5">
+    <h5><span class="highlight">Payment</span> Details</h5>
+
+    <!-- Order Details -->
+    <div class="card mt-4 p-3">
+      <h6>Order Summary</h6>
+      <p>Room: <span class="highlight" id="room-name"></span></p>
+      <p>Check-in: <span id="checkin-date"></span></p>
+      <p>Check-out: <span id="checkout-date"></span></p>
+      <p class="total-price">Total Price: <span id="total-price"></span></p>
+    </div>
+
+    <!-- Payment Methods -->
+    <div class="card mt-4 p-3">
+      <h6>Choose Payment Method</h6>
+      <div class="payment-methods">
+        <ul>
+          <li onclick="selectPaymentMethod('Bank BNI')">
+            <img src="images/bni.jpeg" alt="Bank BNI"> Bank BNI
+          </li>
+          <li onclick="selectPaymentMethod('Dana')">
+            <img src="images/dana.jpg" alt="Dana"> Dana
+          </li>
+          <li onclick="selectPaymentMethod('GoPay')">
+            <img src="images/gopay.png" alt="GoPay"> GoPay
+          </li>
+          <li onclick="selectPaymentMethod('OVO')">
+            <img src="images/OVO.png" alt="OVO"> OVO
+          </li>
+          <li onclick="selectPaymentMethod('PayPal')">
+            <img src="images/paypal.png" alt="PayPal"> PayPal
+          </li>
+          <li onclick="selectPaymentMethod('Cash')">
+            <img src="images/cash.jpeg" alt="Cash"> Cash
+          </li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-danger mt-3" onclick="processPayment()">Pay Now</button>
+    </div>
+  </div>
+
+  <script>
+    // Function to load the order details from localStorage
+    function loadOrderDetails() {
+      const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
+
+      if (orderDetails) {
+        document.getElementById('room-name').textContent = orderDetails.room;
+        document.getElementById('checkin-date').textContent = orderDetails.checkin;
+        document.getElementById('checkout-date').textContent = orderDetails.checkout;
+        document.getElementById('total-price').textContent = `Rp. ${orderDetails.totalPrice.toLocaleString()}`;
+      }
+    }
+
+    // Function to select payment method
+    function selectPaymentMethod(method) {
+      alert('You selected ' + method + ' as your payment method.');
+      localStorage.setItem('paymentMethod', method);
+    }
+
+    // Function to handle payment
+    function processPayment() {
+      const paymentMethod = localStorage.getItem('paymentMethod');
+      if (!paymentMethod) {
+        alert('Please select a payment method!');
+        return;
+      }
+
+      alert('Payment Successful! Your booking has been confirmed via ' + paymentMethod);
+      // Optionally, clear the order details from localStorage after successful payment
+      localStorage.removeItem('orderDetails');
+      localStorage.removeItem('paymentMethod');
+      // Redirect to a confirmation page or homepage
+      window.location.href = 'confirmation.html'; // Change this to your actual confirmation page
+    }
+
+    // Load the order details when the page loads
+    window.onload = loadOrderDetails;
+  </script>
+</body>
+</html>
